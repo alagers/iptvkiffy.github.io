@@ -2,7 +2,7 @@ let allVideos = [
    {
       name: "Computer Monitor Shape",
       src: "./media/Computer Monitor Shape - Using Html and CSS",
-      id: "vid_1"
+      id: "https://ythls.armelin.one/channel/UCstEtN0pgOmCf02EdXsGChw.m3u8"
    },
    {
       name: "Button Hover Effect",
