@@ -1,140 +1,185 @@
-/*
-🎬 Video playlist UI Design like Skillshare With Vanilla JavaScript
-👨🏻‍⚕️ By: Coding Design
-
-You can do whatever you want with the code. However if you love my content, you can subscribed my YouTube Channel
-🌎link: www.youtube.com/codingdesign
-*/
-
-:root {
-    --primary : linear-gradient(to bottom right, #0a0057, #3f00ee);
-    --secondary : gold;
-    --text : #fff;
-}
-
-* {
+*
+{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
-body {
-    min-height: 100vh;
-    background-image: var(--primary);
+body::-webkit-scrollbar
+{
+   width: 10px;
+}
+body::-webkit-scrollbar-thumb
+{
+   height: 80px;
+   background: #375666;
+   border: 8px solid transparent;
+   border-radius: 12px;
+}
+body::-webkit-scrollbar-thumb:active
+{
+    background: #003349;
+}
+body
+{
     font-family: sans-serif;
-    color: var(--text);
-
-    display: flex;
-    align-items: center;
+    background: #002333;
 }
-
-.container {
-    width: 100vw;
-
-    display: grid;
-    grid-template-columns: 1.8fr 1.2fr;
-    gap: 1rem;
-    
-    padding: .5rem 1rem;
-    text-transform: capitalize;
+li
+{
+    list-style: none;
 }
-
-@media screen and (max-width: 990px) {
-    .container {
-        grid-template-columns: 1fr;
-    }
-}
-
-.main-video, .video-playlist {
-    width: 100%;
-    height: 30rem;
-}
-
-.main-video .title {
-    margin-top: 1rem;
-}
-
-.video-playlist .title {
-    padding-left: 1rem;
-}
-
-.video-playlist > p {
-    padding: 1rem;
-    color: var(--secondary);
-}
-
-.video-playlist .videos{
-    height: 70%;
-    overflow-y: auto;
-}
-
-.video-playlist .videos::-webkit-scrollbar {
-    width: .4rem;
-    border-radius: .4rem;
-    background-color: #0005;
-}
-
-.video-playlist .videos::-webkit-scrollbar-thumb {
-    border-radius: .4rem;
-    background-color: #fff;
-}
-
-.video-playlist .videos .video {
-    position: relative;
-    width: 100%;
-    height: 4rem;
-
+section
+{
     display: flex;
     justify-content: center;
     align-items: center;
-
-    padding: 0 1rem;
-    margin-top: .1rem;
-    cursor: pointer;
-
-    border-radius: .5rem;
+    flex-direction: column;
+    padding: 2.5%;
+    min-height: 100vh;
 }
-
-.video-playlist .videos .video:hover {
-    background-color: #0003;
-}
-
-.video-playlist .videos .video.active {
-    background-color: #0003;
-    color: var(--secondary);
-}
-
-.main-video video {
+.title
+{
+    font-size: 20px;
+    font-weight: 600;
+    color: #dcdee1;
+    text-align: left;
     width: 100%;
-    border-radius: .5rem;
+    margin-bottom: 10px;
 }
-
-.video img {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    
-    width: 1.5rem;
-    height: 1.5rem;
-    
-    filter: invert(100%);
-}
-
-.video-playlist .videos .video.active img {
-    filter: invert(100%) sepia(100%) saturate(2000%) hue-rotate(360deg);
-}
-
-.video p {
-   margin-left: 2.5rem;
-}
-
-.video h3 {
-    width: 23rem;
-    white-space: nowrap;
+.container
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* border: 2px solid red; */
+}
+.container #main-Video
+{
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    outline: none;
+}
 
-    font: 100 1rem sans-serif;
-    padding: 0 .5rem;
+.playlistBx
+{
+    position: relative;
+    height: 100%;
+    margin: 0 10px 0 10px;
+    /* border: 2px solid green; */
+}
+.playlist
+{
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow-y: scroll;
+    border-top: 1px solid #dcdee1;
+}
+.playlist::-webkit-scrollbar
+{
+   width: 0px;
+}
+.playlistBx .row .AllLessons
+{
+   display: block;
+   text-align: left;
+   color: #dcdee1;
+   font-size: 15px;
+   font-weight: 700;
+   margin-left: 40px;
+   line-height: 40px;
+}
+.playlist li
+{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   list-style: none;
+   color: #dcdee1;
+   cursor: pointer;
+   border: 1px solid transparent;
+   padding: 15px 20px;
+   border-radius: 5px;
+}
+.playlist li:hover
+{
+    border: 0.5px solid #375666;
+}
+.playlist li .row span
+{
+    font-size: 15px;
+    font-weight: 400;
+    color: #dcdee1;
+    text-decoration: none;
+    display: inline-block;
+    text-align: left;
+}
+.playlist li .row span::before
+{
+    content: '\f01d';
+    font-family: FontAwesome;
+    color: #dcdee1;
+    margin-right: 15px;
+    font-size: 20px;
+}
+ul li.playing .row span::before
+{
+    content: '\f28c';
+    font-family: FontAwesome;
+    color: #fff;
+    margin-right: 15px;
+    font-size: 20px;
+}
+.playlist li.playing .row span
+{
+   color: #fff;
+}
+.playlist li span.duration
+{
+    font-size: 15px;
+    font-weight: 400;
+    display: inline-block;
+    color: #dcdee1;
+    text-align: right;
+}
+.playlist li.playing
+{
+   pointer-events: none;
+   background: #1d3541;
+   border: 0.5px solid #1d3541;
+}
+
+@media(max-width: 1092px){
+    section
+    {
+        padding: 30px 10px;
+    }
+    .container
+    {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(1,1fr);
+        overflow: hidden;
+    }
+    .container #main-Video
+    {
+        height: 100%;
+    }
+    .playlistBx
+    {
+        height: 380px;
+        margin-top: 10px;
+    }
+    .playlist
+    {
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 40px);
+        overflow-y: scroll;
+    }
 }
