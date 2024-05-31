@@ -1,12 +1,12 @@
 let allVideos = [
    {
-      name: "Computer Monitor Shape",
-      src: "./media/Computer Monitor Shape - Using Html and CSS",
-      id: "https://ythls.armelin.one/channel/UCstEtN0pgOmCf02EdXsGChw.m3u8"
+      name: "KAPAMILYA LIVE",
+      src: "https://ythls.armelin.one/channel/UCstEtN0pgOmCf02EdXsGChw.m3u8",
+      id: "vid_1"
    },
    {
-      name: "Button Hover Effect",
-      src: "./media/Button Hover Effect Using Html And CSS",
+      name: "TV5",
+      src: "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8",
       id: "vid_2"
    },
    {
