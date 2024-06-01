@@ -1,185 +1,47 @@
-*
-{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body::-webkit-scrollbar
-{
-   width: 10px;
-}
-body::-webkit-scrollbar-thumb
-{
-   height: 80px;
-   background: #375666;
-   border: 8px solid transparent;
-   border-radius: 12px;
-}
-body::-webkit-scrollbar-thumb:active
-{
-    background: #003349;
-}
-body
-{
-    font-family: sans-serif;
-    background: #002333;
-}
-li
-{
-    list-style: none;
-}
-section
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 2.5%;
-    min-height: 100vh;
-}
-.title
-{
-    font-size: 20px;
-    font-weight: 600;
-    color: #dcdee1;
-    text-align: left;
-    width: 100%;
-    margin-bottom: 10px;
-}
-.container
-{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    overflow: hidden;
-    /* border: 2px solid red; */
-}
-.container #main-Video
-{
-    position: relative;
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-    outline: none;
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-.playlistBx
-{
-    position: relative;
-    height: 100%;
-    margin: 0 10px 0 10px;
-    /* border: 2px solid green; */
-}
-.playlist
-{
-    position: absolute;
-    width: 100%;
-    height: calc(100% - 40px);
-    overflow-y: scroll;
-    border-top: 1px solid #dcdee1;
-}
-.playlist::-webkit-scrollbar
-{
-   width: 0px;
-}
-.playlistBx .row .AllLessons
-{
-   display: block;
-   text-align: left;
-   color: #dcdee1;
-   font-size: 15px;
-   font-weight: 700;
-   margin-left: 40px;
-   line-height: 40px;
-}
-.playlist li
-{
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   list-style: none;
-   color: #dcdee1;
-   cursor: pointer;
-   border: 1px solid transparent;
-   padding: 15px 20px;
-   border-radius: 5px;
-}
-.playlist li:hover
-{
-    border: 0.5px solid #375666;
-}
-.playlist li .row span
-{
-    font-size: 15px;
-    font-weight: 400;
-    color: #dcdee1;
-    text-decoration: none;
-    display: inline-block;
-    text-align: left;
-}
-.playlist li .row span::before
-{
-    content: '\f01d';
-    font-family: FontAwesome;
-    color: #dcdee1;
-    margin-right: 15px;
-    font-size: 20px;
-}
-ul li.playing .row span::before
-{
-    content: '\f28c';
-    font-family: FontAwesome;
-    color: #fff;
-    margin-right: 15px;
-    font-size: 20px;
-}
-.playlist li.playing .row span
-{
-   color: #fff;
-}
-.playlist li span.duration
-{
-    font-size: 15px;
-    font-weight: 400;
-    display: inline-block;
-    color: #dcdee1;
-    text-align: right;
-}
-.playlist li.playing
-{
-   pointer-events: none;
-   background: #1d3541;
-   border: 0.5px solid #1d3541;
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  max-width: 500px; /* Limit the width on smaller screens */
 }
 
-@media(max-width: 1092px){
-    section
-    {
-        padding: 30px 10px;
-    }
-    .container
-    {
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(1,1fr);
-        overflow: hidden;
-    }
-    .container #main-Video
-    {
-        height: 100%;
-    }
-    .playlistBx
-    {
-        height: 380px;
-        margin-top: 10px;
-    }
-    .playlist
-    {
-        position: absolute;
-        width: 100%;
-        height: calc(100% - 40px);
-        overflow-y: scroll;
-    }
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Mobile Styles */
+@media (max-width: 600px) {
+  .modal-content {
+    margin: 10% auto; /* Adjust margin for smaller screens */
+    padding: 10px;
+    width: 90%; /* Adjust width for smaller screens */
+  }
 }
