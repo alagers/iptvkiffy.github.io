@@ -1,280 +1,645 @@
 <!DOCTYPE html>
-<html>
-<head>	
-        <title>Stream Your Favorite Channels</title>
-	
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<html lang="en">
+
+<!-- Mirrored from app.enicsnet.com/ by HTTrack Website Copier/3.x [XR&CO'2017], Fri, 21 Jun 2024 03:15:44 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>document.addEventListener('contextmenu', function(event) {event.preventDefault();});</script>
+	<script disable-devtool-auto src='../external.html?link=https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+    <title>KURIKONG TV</title>
     <style>
+        @import url('../external.html?link=https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap');
+
         body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: url('') no-repeat center center fixed;
-            background-size: cover;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
         }
         .container {
-            max-width: 800px;
-            margin: auto;
-            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 10px;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 10px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        h1 {
-            color: #333;
+            width: calc(90% - 40px);
+            height: auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: glowing 2s infinite;
+            transition: all 0.3s ease;
+            color: #333;
         }
-        select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            padding: 10px 30px 10px 10px;
-            margin-bottom: 20px;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 600;
-            border: 2px solid #007BFF;
-            border-radius: 4px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23007BFF" d="M7 10l5 5 5-5z"/></svg>') no-repeat;
-            background-position: right 10px center;
-            background-size: 12px;
-            background-color: #fff;
+        
+        .card img {
+            width: 50%;
+            height: auto;
+            margin: auto;
+            display: block;
+            padding: 10px;
+        }
+        .card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+        .btn-primary {
+            align-self: flex-end;
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: 500;  
+            width: 100%;                     
         }
-        select:hover {
-            background-color: #f8f9fa;
+        .btn-primary:hover {
+            background-color: darkblue;
+            cursor: pointer;
         }
-        video {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
+
+        /* For devices with screen width greater than 768px */
+        @media (min-width: 768px) {
+            .card {
+                width: calc(50% - 40px);
+            }
         }
-        .ad-container {
-            margin: 20px 0;
-            background-color: #d9d9d9;
+
+        /* For devices with screen width greater than 1200px */
+        @media (min-width: 1200px) {
+            .card {
+                width: calc(15% - 40px);
+            }
+        }
+        .jumbotron {
+            background-color: rgba(118, 154, 221, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 10px;
+            margin: 10px;
+            border: 2px;
+            border-radius: 10px;
             text-align: center;
-            padding: 20px;
-            font-size: 20px;
             color: #333;
-            border-radius: 4px;
         }
-
-        @keyframes glowing {
-
-            0% { color: #333; text-shadow: none; }
-
-            50% { color: #fff; text-shadow: 0 0 8px #fff; }
-
-            100% { color: #333; text-shadow: none; }
-
+        .jumbotron h1 {
+            font-size: 2em;
+            font-weight: 600;
+        }
+        .jumbotron p {
+            font-size: 1.2em;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #modal-video, #modal-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+        #modal-video {
+            display: none;
+        }
+        #modal-iframe {
+            display: none;
+        }
+         #time {
+            font-size: 3em;
+            color: #333;
+        }
+             }
+        #date {
+            font-size: 1.2em;
+            color: #666;
         }
     </style>
-</head>
-	<head>
-	<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ad Modal Example</title>
-<link rel="stylesheet" href="style.css">
+  <script>
+        async function fetchNTPTime() {
+            try {
+                const response = await fetch('../external.html?link=http://worldtimeapi.org/api/timezone/Etc/GMT');
+                const data = await response.json();
+                return new Date(data.datetime);
+            } catch (error) {
+                console.error('Error fetching NTP time:', error);
+                return new Date(); // Fallback to local time in case of error
+            }
+        }
+
+        async function updateTime() {
+            const ntpTime = await fetchNTPTime();
+            const gmtPlus8 = new Date(ntpTime.getTime() + (3600000 * 8));
+
+            let hours = gmtPlus8.getUTCHours();
+            const minutes = String(gmtPlus8.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(gmtPlus8.getUTCSeconds()).padStart(2, '0');
+
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            const strHours = String(hours).padStart(2, '0');
+
+            const today = gmtPlus8.getUTCDate();
+            const month = gmtPlus8.toLocaleString('default', { month: 'long' }).toUpperCase();
+            const year = gmtPlus8.getUTCFullYear();
+
+            document.getElementById('time').textContent = `${strHours}:${minutes}:${seconds} ${ampm}`;
+            document.getElementById('date').textContent = `${today} ${month} ${year}`;
+        }
+
+        setInterval(updateTime, 1000);
+        window.onload = updateTime;  // Initialize the time display when the page loads
+    </script>
 </head>
 <body>
-  <div id="adModal" class="modal">
+
+<div class="modal" id="myModal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    <p>ads</p>
+    <video id="modal-video" controls></video>
+    <iframe id="modal-iframe" allowfullscreen></iframe>
   </div>
 </div>
 
-<script src="script.js"></script>
-    <div id="clickTimes"></div>
-<div class="container">
-    <h1>Watch Live Channels</h1>
-<select id="channelSelect" onchange="changeChannel(this.value)">
-  <option value="https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/a2zsd.m3u8">A2Z</option>
-  <option value="https://cdn1.skygo.mn/live/disk1/Boomerang/HLS-FTA/Boomerang.m3u8">Cartoonito</option>
-  <option value="https://lnc-americas-dumbest-criminals.tubi.video/index.m3u8">AMERICAS DUMBEST CRIMINALS</option>
-  <option value="https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/animalplanet_qp.m3u8">ANIMAL PLANET</option>
-  <option value="https://adultswim-vodlive.cdn.turner.com/live/test-2/stream.m3u8">ADULT CARTOON</option>
-  <option value="https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/animax_qp.m3u8">ANIMAX PHILIPPINES</option>
-  <option value="https://lightning-actionhollywood-xiaomi.amagi.tv/playlist.m3u8">Action Hollywood Movies</option>
-  <option value="https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/axn_qp.m3u8">AXN</option>
-  <option value="https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/bbcearthhd_qp.m3u8">BBC EARTH HD</option>
-  <option value="https://cdn1.skygo.mn/live/disk1/Boomerang/HLS-FTA/Boomerang.m3u8">BOOMERANG</option>
-  <option value="http://170.254.18.106/COMEDY_CENTRAL/index.m3u8">COMEDY CENTRAL</option>
-  <option value="https://webtelly-streams.akamaized.net/prod-cbc-comedy-rtp/hls/master.m3u8">CBS COMEDY</option>
-  <option value="https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cinemaxhd_qp.m3u8">CINEMAX</option>
-  <option value="https://cinemaone-abscbn-ono.amagi.tv/index.m3u8">CINEMA ONE</option>
-  <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/cartoonnetworkhd_dr.m3u8">CARTOON NETWORK</option>
-  <option value="https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01201-cinedigmenterta-comedydynamics-cineverse/playlist.m3u8">COMEDY DYNAMICS</option>
-  <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/crimeinvestigation_dr.m3u8">CRIME INVESTIGATION</option>
-  <option value="https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnnph_qp.m3u8">CNN PH</option>
-  <option value="https://adultswim-vodlive.cdn.turner.com/live/daily_animated_1/stream.m3u8">DAILY ANIMATED</option>
-  <option value="https://stream.gmanews.tv/ioslive/livestream/playlist.m3u8">DZBB</option>
-  <option value="http://143.244.60.30/ESPN/index.m3u8">ESPN</option>
-  <option value="https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/discovery_dr.m3u8">DISCOVERY</option>
-  <option value="https://cdn1.skygo.mn/live/disk1/Discovery_Asia/HLS-FTA/Discovery_Asia.m3u8">DISCOVERY ASIA</option>
-  <option value="https://dreamstartv.com/hls/stream.m3u8">DREAMSTAR TV</option>
-  <option value="https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/dreamworkstag_qp.m3u8">DREAMWORKS</option>
-  <option value="https://edge1.laotv.la/live/HBO/index.m3u8">HBO</option>
-  <option value="https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/hbosighd_qp.m3u8">HBO HD</option>
-  <option value="https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/hbofamilyhd_qp.m3u8">HBO FAMILY</option>
-  <option value="https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/historyhd_dr.m3u8">HISTORY HD</option>
-  <option value="https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/hitshd_qp.m3u8">HITS HD</option>
-  <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/hitsmovies_dr.m3u8">HITS MOVIES</option>
-  <option value="https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/hitsnow_qp.m3u8">HITS NOW</option>
-  <option value="https://adultswim-vodlive.cdn.turner.com/live/mr-pickles/stream.m3u8">MR PICKLES</option>
-  <option value="https://ythls.armelin.one/channel/UC5IF8NlxMW1GkEUUqWJJBIw.m3u8">NET 25</option>
-  <option value="https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/nickelodeon_dr.m3u8">NICKELODEON</option>
-  <option value="https://newidco-newkid-1-eu.xiaomi.wurl.tv/playlist.m3u8">NEW KPOP (EU)</option>
-  <option value="https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/onesports_qp.m3u8">ONE SPORT</option>
-  <option value="https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/pbarushhd_qp.m3u8">PBA RUSH</option>
-  <option value="https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/a2zsd.m3u8">PINOY NOONTIME</option>
-  <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/pinoyboxoffice_qp.m3u8">PINOY BOX OFFICE</option>
-  <option value="https://rakuten-action-8-nl.samsung.wurl.tv/playlist.m3u8">RAKUTEN ACTION</option>
-  <option value="https://rakuten-comedy-8-nl.samsung.wurl.tv/playlist.m3u8">RAKUTEN COMEDY</option>
-  <option value="https://rakuten-comedymovies-1-eu.rakuten.wurl.tv/playlist.m3u8">RAKUTEN COMEDY MOVIES</option>
-  <option value="https://newidco-rakutenviki-2-eu.xiaomi.wurl.tv/playlist.m3u8">Rakuten Viki (EU)</option>
-  <option value="https://rakuten-topfree-7-eu.rakuten.wurl.tv/playlist.m3u8">RAKUTEN TOP FILMS</option>
-  <option value="https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/rockextreme_dr.m3u8">ROCK EXTREME</option>
-  <option value="https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/rockentertainment_dr.m3u8">ROCK ENTERTAINMENT</option>
-  <option value="https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/tapactionflixhd_qp.m3u8">TAP ACTION</option>
-  <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/tapedge_dr.m3u8">TAP EDGE</option>
-  <option value="https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/vivacinema_qp.m3u8">VIVA CINEMA</option>
-  <option value="https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/warnertvhd_dr.m3u8">WARNER TV</option>
-  <option value="https://newidco-ygtv-1-eu.xiaomi.wurl.tv/playlist.m3u8">YG TV (EU)</option>
-  <option value="https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8">TV 5</option>
-  <option value="https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/natgeowild_dr.m3u8">TVN MOVIES</option>
-  <option value="https://answermedia-fite-tv-1-eu.xiaomi.wurl.tv/playlist.m3u8">Fite TV (EU)</option>
-  <option value="https://ythls.armelin.one/channel/UCJCUbMaY593_4SN1QPG7NFQ.m3u8">PTV 4</option>
-  <option value="http://watchtv.best:80/play/live.php?mac=00:1A:79:01:44:12&stream=223021&extension=ts">GMA LIVE TV</option>
-  <option value="http://watchtv.best:80/play/live.php?mac=00:1A:79:01:44:12&stream=223025&extension=ts">GMA NEWS TV</option>
-  <option value="http://watchtv.best:80/play/live.php?mac=00:1A:79:01:44:12&stream=223027&extension=ts">GMA PINOY TV</option>
-  <option value="https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/celestialmoviespinoy_qp.m3u8">CELESTIAL MOVIES PINOY</option>
-  <option value="https://newidco-sbs-1-eu.xiaomi.wurl.tv/playlist.m3u8">SBS (EU)</option>
-</select>
-    <video id="video" controls></video>
-    <div class="ad-container">
-       ads
+<div class="jumbotron">
+    <h2>ENICS TV  </h2>
+    <div id="time"></div>    <div id="date"></div>
+
+    <h4 style="color: red; font-style: italic;">***DAILY UPDATE***</h4>
+    <p style="color: blue; font-style: italic; font-size: 14px;"> Some Channel May Not work <br> We Are Currently In Trial Phase</p>
+    <p style="font-size: 12px; font-style: italic;">DISCLAIMER: We Do Not Stream All Video On This Platform. Copyright for all content belongs to their respective owners. We claim no ownership. Contact us at <a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="66151316160914122603080f05150803124805090b">[email&#160;protected]</a> </p>
+
+</div>
+<div class="jumbotron">
+    <h2>LOCAL CHANNEL  </h2>
+	</div>
+	<div class="container">
+	  <div class="card">
+        <h3>TV 5 HD</h3>
+        <img src="../upload.wikimedia.org/wikipedia/en/thumb/e/e6/TV5_HD_Logo_2023.svg/2560px-TV5_HD_Logo_2023.svg.png">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>GTV</h3>
+        <img src="../upload.wikimedia.org/wikipedia/en/5/5a/GTV_Philippines_Logo.png">                    
+       <button class="btn-primary" onclick="redirectToPlayerx()">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>KAPAMILYA CHANNEL</h3>
+        <img src="../upload.wikimedia.org/wikipedia/en/thumb/f/f2/Kapamilya_Channel_Logo_2020.svg/2560px-Kapamilya_Channel_Logo_2020.svg.png">                    
+        <button class="btn-primary" onclick="redirectToPlayerkapamilya()">WATCH NOW</button>
+    </div>
+
+     <div class="card">
+        <h3>GMA</h3>
+        <img src="../external.html?link=https://postimg.cc/mcXc5JSJ">                    
+       <button class="btn-primary" onclick="redirectToPlayerz()">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>A2Z</h3>
+        <img src="../external.html?link=https://postimg.cc/n9JcR4xp">                    
+       <button class="btn-primary" onclick="redirectToPlayera2z()">WATCH NOW</button>
+    </div>
+    
+    <div class="card">
+        <h3>RPTV</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/7/7d/RPTV_official_logo.png">                    
+       <button class="btn-primary" onclick="redirectToPlayerrptv()">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>DREAM TV</h3>
+        <img src="../external.html?link=https://postimg.cc/N22KVDRp">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://ssh101-fl.bozztv.com/ssh101/dreamtvph/index.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    
+    <div class="card">
+        <h3>ANC HD</h3>
+        <img src="../external.html?link=https://static.wikia.nocookie.net/logopedia/images/a/af/ANCHD.svg">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://ancglobal-abscbn-ono.amagi.tv/playlist720_p.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+	 <div class="card">
+        <h3>CINEMA ONE</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/en/6/6d/Cinema_One_2013_logo.svg">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://cinemaone-abscbn-ono.amagi.tv/index_3.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+
+    <div class="card">
+        <h3>CINEMO!</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/en/2/2b/Cinemo_logo_vectorized.svg">                 
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://cinemo-abscbn-ono.amagi.tv/playlist720_p.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    <div class="card">
+    <h3>PBO</h3>
+        <img src="../upload.wikimedia.org/wikipedia/en/f/f6/Pinoy_Box_Office_logo.png">                    
+       <button class="btn-primary" onclick="redirectToPlayerpbo()">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>MYX</h3>
+        <img src="../static.wikia.nocookie.net/russel/images/4/46/Myx_Logo_2021.png_%3b%20filename_%3dUTF-8%27%27Myx_Logo_2021.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://myxnola-abscbn-ono.amagi.tv/index_3.m3u8', 'hls')">WATCH NOW</button>
     </div>
 </div>
-
-<script>
-    function closead() {
-            document.getElementById('vigneta').style.display = 'none';
-        }
-    function changeChannel(channelUrl) {
-        // Show interstitial ad before changing the channel
-        showInterstitialAd().then(() => {
-            // Proceed to change the channel after showing the ad
-            if (Hls.isSupported()) {
-                var hls = new Hls();
-                hls.loadSource(channelUrl);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play();
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = channelUrl;
-                video.addEventListener('canplay', function() {
-                    video.play();
-                });
-            } else {
-                console.error('HLS not supported');
-            }
-        }).catch(error => {
-            console.error('Error showing interstitial ad:', error);
-        });
-    }
-
-    // Function to show interstitial ad
-    function showInterstitialAd() {
-        return new Promise((resolve, reject) => {
-            // This is a placeholder function. Replace it with the actual function call to show an interstitial ad
-            // provided by your ad network. Ensure to resolve the promise once the ad has been displayed or closed.
-            console.log("Showing interstitial ad...");
-
-            // Example: resolve the promise after a timeout to simulate ad display
-            setTimeout(() => {
-                console.log("Interstitial ad shown");
-                resolve();
-            }, 1000); // Simulate a 3-second ad display
-        });
-    }
-</script>
-	<divi><p id="visitorCount"></p>
-<p id="visitorCountry"></p></divi>
-	    <!-- Add the 'social-media-buttons' class to a container div -->
-    <div class="social-media-buttons">
-        <!-- Facebook Share Button -->
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://hd-tv.vercel.app/" target="_blank">
-            <img src="https://img.freepik.com/premium-vector/social-media-icon-illustration-facebook-facebook-icon-vector-illustration_561158-2134.jpg?size=338&ext=jpg&ga=GA1.1.553209589.1713916800&semt=ais" alt="Share on Facebook" width="50" height="50">
-        </a>
-
-        <!-- Twitter Share Button -->
-        <a href="https://twitter.com/intent/tweet?url=https://hd-tv.vercel.app/&text=Check%20out%20this%20amazing%20content!" target="_blank">
-            <img src="https://www.freeiconspng.com/thumbs/twitter-icon/keywords-colors-icons-desktop-icons-style-simple-3.png" alt="Share on Twitter" width="50" height="50">
-        </a>
-
-        <!-- Instagram Share Button -->
-        <a href="https://www.instagram.com/?url=https://hd-tv.vercel.app/" target="_blank">
-            <img src="https://image.similarpng.com/thumbnail/2020/05/New-Instagram-icon-vector-PNG.png" alt="Share on Instagram" width="50" height="50">
-        </a>
-
-        <!-- Add more social media platforms as needed -->
+	
+		<div class="jumbotron">
+    <h2>SPORTS CHANNEL  </h2>
+	</div>
+<div class="container">  
+ <div class="card">
+        <h3>NBA PHILIPPINES</h3>
+        <img src="../upload.wikimedia.org/wikipedia/en/thumb/d/de/NBA_TV_Philippines.png/1280px-NBA_TV_Philippines.png">                    
+        <button class="btn-primary" onclick="redirectToPlayernba()">WATCH NOW</button>
+    </div>
+    <div class="card">
+    <h3>PBA RUSH</h3>
+        <img src="../upload.wikimedia.org/wikipedia/en/c/cd/PBA_Rush_logo.png">                    
+       <button class="btn-primary" onclick="redirectToPlayerpba()">WATCH NOW</button>
+    </div>
+    <div class="card">
+    <h3>ONE SPORTS +</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/commons/9/9c/One_Sports_logo.svg">                    
+       <button class="btn-primary" onclick="playChannel('../external.html?link=https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/onesportsplushd_qp_6.m3u8', 'hls')">WATCH NOW</button>>
+    </div>
+    <div class="card">
+    <h3>PREMIER SPORTS</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/c/cb/PremierSports-ph.png">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dice-live-ap.akamaized.net/hls/live/2102446/220944-271466/exchange220944dfagp_220944_1400/chunklist.m3u8?hdntl=exp=1717856823~acl=%2f*~id=a20f7161-06a7-48f7-a45a-bd9df7d55493~data=hdntl,dWlkPTY5azlzaXw3MDg1YzRjYS03NWMwLTQwMjItOTZmNC0xODQ1NjZjNWVmYmYmaXA9MTM2LjE1OC40Ni4xMzMmZXhwPTE3MTc4NTY4NTImZWlkPTIyMDk0NCZjaWQ9ZGNlLnRhcGdvJm9pZD0zMjU~hmac=23d3ee4804f8a76e22f43051e56605f2ad2e5c9b29e8c1a7d7bd63425993c14a', 'hls')">WATCH NOW</button>
+    </div>
+<div class="card">
+        <h3>TAP SPORTS</h3>
+        <img src="../external.html?link=https://postimg.cc/t14fhjV2">                  
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dice-live-ap.akamaized.net/hls/live/2102491/220939-271463/exchange220939yabjz_220939_1400/chunklist.m3u8?hdntl=exp=1717856766~acl=%2f*~id=042bbd88-22ae-487e-b4aa-b8552f173a3d~data=hdntl,dWlkPTY5azlzaXw3MDg1YzRjYS03NWMwLTQwMjItOTZmNC0xODQ1NjZjNWVmYmYmaXA9MTM2LjE1OC40Ni4xMzMmZXhwPTE3MTc4NTY3OTYmZWlkPTIyMDkzOSZjaWQ9ZGNlLnRhcGdvJm9pZD0zMjU~hmac=6149d318dba99195a0b6c3fccb351a27f145329bc56eee0e89f8213f10b78532', 'hls')">WATCH NOW</button>
+        </div>
+		</div>
+	
+	<div class="jumbotron">
+    <h2>KIDS CHANNEL  </h2>
+	</div>
+<div class="container">
+  <div class="card">
+        <h3>COCOMELON TV</h3>
+        <img src="../external.html?link=https://postimg.cc/WDpynBr8">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://www.youtube.com/embed/-VBxijFm50Y', 'youtube')">WATCH NOW</button>
+    </div>
+	 <div class="card">
+        <h3>CARTOONITO</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Cartoonito_-_Logo_2021.svg/1000px-Cartoonito_-_Logo_2021.svg.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://cdn1.skygo.mn/live/disk1/Boomerang/HLS-FTA/Boomerang.m3u8', 'hls')">WATCH NOW</button>
+    </div><div class="card">
+        <h3>PBS KIDS</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/commons/e/e3/PBS_Kids_logo_(2022).svg">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://2-fss-2.streamhoster.com/pl_140/amlst:200914-1298290/playlist.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>MOONBUG (KIDS)</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/5/5c/Moonbug2ndLogo.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://moonbug-rokuus.amagi.tv/playlist404-p.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>ZOOMOO (KIDS)</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/9/9f/ZooMoo-Kids.html">                   
+        <button class="btn-primary" onclick="playChannel(' https://zoomoo-samsungau.amagi.tv/playlist720p.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>CARTOON NETWORK</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/8/80/Cartoon_Network_2010_logo.svg/1200px-Cartoon_Network_2010_logo.svg.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://cdn1.skygo.mn/live/disk1/Cartoon_Network/HLS-FTA/Cartoon_Network.m3u8', 'hls')">WATCH NOW</button>
     </div>
 
-</body>
-	<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Increment visitor count (simplified example, not unique visitors)
-            let visitorsCount = parseInt(localStorage.getItem('visitorsCount') || '0') + 1;
-            localStorage.setItem('visitorsCount', visitorsCount.toString());
+    <div class="card">
+        <h3>DREAMWORKS TAGALOG</h3>
+        <img src="../upload.wikimedia.org/wikipedia/en/thumb/f/ff/DreamWorks_Animation_SKG_logo_with_fishing_boy.svg/1200px-DreamWorks_Animation_SKG_logo_with_fishing_boy.svg.png">  
+        <button class="btn-primary" onclick="redirectToPlayerdreamworktagalog()">WATCH NOW</button>
+    </div>
+     <div class="card">
+        <h3>NICKELODEON</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/c/cb/Nickelodeon_2023_logo.png">             
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dice-live-ap.akamaized.net/hls/live/2102404/224407-271475/exchange224407xuzfe_224407_1400/chunklist.m3u8?hdntl=exp=1717856866~acl=%2f*~id=a551a054-cc3e-43a7-aecc-3e50aac9d860~data=hdntl,dWlkPTY5azlzaXw3MDg1YzRjYS03NWMwLTQwMjItOTZmNC0xODQ1NjZjNWVmYmYmaXA9MTM2LjE1OC40Ni4xMzMmZXhwPTE3MTc4NTY4OTUmZWlkPTIyNDQwNyZjaWQ9ZGNlLnRhcGdvJm9pZD0zMjU~hmac=18080686ae559644635871afb07c1d5298a438b7ef778d434a684ccd2af94788', 'hls')">WATCH NOW</button>
+    </div>
+   <div class="card">
+        <h3>NICK JR</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/0/05/Nick_Jr.logo.png">                  
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dice-live-ap.akamaized.net/hls/live/2102442/226987-271474/exchange226987smmkn_226987_1400/chunklist.m3u8?hdntl=exp=1717856721~acl=%2f*~id=0626f8cb-d612-456b-8d96-d015e148cd46~data=hdntl,dWlkPTY5azlzaXw3MDg1YzRjYS03NWMwLTQwMjItOTZmNC0xODQ1NjZjNWVmYmYmaXA9MTM2LjE1OC40Ni4xMzMmZXhwPTE3MTc4NTY3NTAmZWlkPTIyNjk4NyZjaWQ9ZGNlLnRhcGdvJm9pZD0zMjU~hmac=7a74ddc67764a8a9132f08ed39765677963498e0bc4bec661dd529f671728304', 'hls')">WATCH NOW</button>
+    </div>
+	<div class="card">
+        <h3>ANIMAX</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Animax_logo.svg/2560px-Animax_logo.svg.png">                   
+        <button class="btn-primary" onclick="redirectToPlayery()">WATCH NOW</button>
+    </div>
+	</div>
+		<div class="jumbotron">
+    <h2>MOVIE CHANNELS  </h2>
+	</div>
+<div class="container">
+	     <div class="card">
+        <h3>LOTUS MACAU</h3>
+        <img src="../external.html?link=https://postimg.cc/5XTWskvq">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://cdn1.skygo.mn/live/disk1/Lotus/HLS-FTA/Lotus.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    
+    <div class="card">
+        <h3>SONY MOVIES</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Sony_Movies_Logo.svg/2042px-Sony_Movies_Logo.svg.png">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://cdn.klowdtv.net/803B48A/n1.klowdtv.net/live1/smc_720p/playlist.m3u8', 'hls')">WATCH NOW</button>
+    </div>
 
-            // Display visitor count
-            document.getElementById('visitorCount').textContent = `Visitor Count: ${visitorsCount}`;
+    <div class="card">
+        <h3>RAKUTEN TV MOVIE</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Rakuten_TV_logo.svg/768px-Rakuten_TV_logo.svg.png">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://rakuten-actionmovies-1-eu.rakuten.wurl.tv/2000.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+	<div class="card">
+        <h3>MOVIE SPHERE</h3>
+        <img src="../external.html?link=https://postimg.cc/3dhjwD0L">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://moviesphereuk-samsunguk.amagi.tv/playlist.m3u8', 'hls')">WATCH NOW</button>
+    </div>
 
-            // Fetch and display visitor's country using a fictional IP geolocation API
-            fetch('https://api.ipgeolocation.io/getCountry?apiKey=02643877fddb45d7b609d7b29a8a62a9')
-                .then(response => response.json())
-                .then(data => {
-			const country = data.country_name;
+    <div class="card">
+        <h3>REDBOX MOVIES</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Redbox_logo_2017.svg/2560px-Redbox_logo_2017.svg.png">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://spotlight-redbox.amagi.tv/playlist.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>THRILL</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/a/a0/Thrill_logo.jpg">                    
+        <button class="btn-primary" onclick="redirectToPlayerthrill()">WATCH NOW</button>
+    </div>
 
-                        // Restrict ad based on country
-                        if (country === 'Philippines' || country === 'India') {
-                            console.log('Ad restricted for country:', country);
-                            document.getElementById('adText').textContent = 'Ads restricted for your country';
-                            resolve(); // Skip showing the ad
-                        } else {
-                            // Show the ad (replace with your actual ad code)
-                            console.log('Showing interstitial ad...');
-                            document.getElementById('adModal').style.display = 'block';
+    <div class="card">
+        <h3>HBO HD</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/1280px-HBO_logo.svg.png">                    
+        <button class="btn-primary" onclick="redirectToPlayerhbo()">WATCH NOW</button>
+    </div>
+	   <div class="card">
+        <p>PARAMOUNT ENTERTAINMENT</p>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/commons/5/57/Paramount_Network_2024.svg">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://livecdn-iptv001.rumsport.com/stream/14839/tracks-v1a1/mono.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+	</div>
+	
+	<div class="jumbotron">
+    <h2>FOREIGN NEWS CHANNELS  </h2>
+	</div>
+<div class="container">
 
-                            // Simulate ad display for 3 seconds
-                            setTimeout(() => {
-                                console.log('Interstitial ad shown');
-                                document.getElementById('adModal').style.display = 'none';
-                                resolve(); // Ad shown, resolve the promise
-                            }, 3000);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching country:', error);
-                        resolve(); // Skip showing the ad in case of an error
-                    });
-            });
+<div class="card">
+        <h3>AL JAZEERA</h3>
+        <img src="../external.html?link=https://static.wikia.nocookie.net/logopedia/images/f/f2/Aljazeera_eng.svg">             
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://live-hls-web-aje.getaj.net/AJE/02.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+	<div class="card">
+        <h3>FOX NEWS</h3>
+        <img src="../static.foxnews.com/foxnews.com/content/uploads/2022/09/Fox-News-Live.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://fox-foxnewsnow-vizio.amagi.tv/playlist.m3u8', 'hls')">WATCH NOW</button>
+        </div>
+		 <div class="card">
+        <h3>CNN HD</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/800px-CNN.svg.png">                  
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://cnn-cnninternational-1-eu.rakuten.wurl.tv/f93b9a949a4a8651dd5a2f42e3a2b6f9.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+	 <div class="card">
+        <h3>BLOOMBERG</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/5/5d/New_Bloomberg_Logo.svg/1024px-New_Bloomberg_Logo.svg.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://liveprodapnortheast.akamaized.net/ap1/Channel-APTVqvs-AWS-Tokyo-2/Source-APTVqvs-10000-1-swyg20-BP-HD-5-Y6282hwqf3C7_live.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+	</div>
+
+	<div class="jumbotron">
+    <h2>ENTERTAINMENT CHANNELS  </h2>
+	</div>
+<div class="container">
+
+ <div class="card">
+        <h3>TRAVEL CHANNEL</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/8/8a/2018_Travel_Channel_logo.svg/1200px-2018_Travel_Channel_logo.svg.png">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dplus.gammacdn.workers.dev/videos/110.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+
+    <div class="card">
+        <h3>FOOD NETWORK</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/commons/4/45/Food_Network_Logo.svg">                    
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dplus.gammacdn.workers.dev/videos/112.m3u8', 'hls')">WATCH NOW</button>
+    </div> 
+
+<div class="card">
+        <h3>ANIMAL PLANET</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/commons/2/20/2018_Animal_Planet_logo.svg">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dplus.gammacdn.workers.dev/videos/99.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+     <div class="card">
+        <h3>HISTORY</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/commons/f/f5/History_Logo.svg">                    
+        <button class="btn-primary" onclick="redirectToPlayerhistory()">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>DISCOVERY SCIENCE</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Discovery_Networks_logo_(3).svg/2560px-Discovery_Networks_logo_(3).svg.png">
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dplus.gammacdn.workers.dev/videos/96.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+
+    <div class="card">
+        <h3>DISCOVERY ASIA</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Discovery_Asia_logo.svg/1280px-Discovery_Asia_logo.svg.png">
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://cdn1.skygo.mn/live/disk1/Discovery_Asia/HLS-FTA/Discovery_Asia.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+
+   <div class="card">
+        <h3>TLC</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/a/af/TLC-Logo_2016.png">
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dplus.gammacdn.workers.dev/videos/97.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>DESIGN TV</h3>
+        <img src="../external.html?link=https://postimg.cc/BLQwfYZ5">
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://thedesignnetwork-pluto.amagi.tv/playlist720p.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    <div class="card">
+        <h3>KBS WORLD</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/commons/9/94/KBS_World_24_logo.svg">
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://kbsworld-ott.akamaized.net/hls/live/2002341/kbsworld/master.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+
+    <div class="card">
+        <h3>ARIRANG</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/6/64/Arirang_logo.png/1200px-Arirang_logo.png">
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://amdlive-ch03-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b2256000_sleng.m3u8', 'hls')">WATCH NOW</button>
+        </div>
+
+    <div class="card">
+        <h3>ASIAN CRUSH</h3>
+        <img src="../external.html?link=https://unlocator.com/wp-content/uploads/2019/02/asiancrush-1.svg">                   
+        <button class="btn-primary" onclick="playChannel('https://amg01201-cinedigmenterta-asiancrush-cineverse-x701o.amagi.tv/playlist/amg01201-cinedigmenterta-asiancrush-cineverse/cb543d1b796c668c84cb3f62cef049a2f9421fde1d6988693eb5518975d1073edce2a59caa08ff16388f1ede7f0a66413a3e951fda77118fd87eb141453c5728cfffe729a2c05616b7db083429b56a062a866a68ac39437ed0e21f48a238b6720a5aa82a66443d80b846ac7756db80148e782a8eb3dc68306d390ec90c1fbcbf5ba0f8ff5e43ca78a3b51a4b902910e39f429d8118a681d50ec85e8f25f4118095a1d88017d38f9437f852b7061632571541527ee9ab6d9e98f15931957d21560e5ce8a6808c2156e466702c337b56dd1f9b32dd8024fb115f7bc49f3def019f6eb006a9a16da9b9a29d3529c64c6f381345f0b5dae6d63027af69bb8fe8d37a7098bc721223983c89737979f897ba896357ae21976ea5cdecad7a7b0867a5bdf8e8cea3844bd308cbc9fd943c789c026e16ab52b89361d728922de69e53696b444aa99542d7c6f76a70331fc8d005942412b78ddfd89f166d9e295b7bf870d55e3269ce1f6568aa78aacd723fdf6642ae1d09d67479c04ef5b329b580dee60d34fc9ee44aed60e2b04583a756e73d720c55e0a7620e1c153de3ef600c22708c10b78484b2217b75869dfaf7ce5737102a57035cf985c944dbdf90674d6c823940477b1f109a01ac19fc085b0f23cc5e9eec3e7d8b022e3af5e558795f7f9ddcbe918db59b12e767b2a90e151a88cffbf5d1232a4e5e745aa3/162/1280x720_3329040/index.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+
+    <div class="card">
+        <h3>AMC</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Amc_logo.svg/2560px-Amc_logo.svg.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://5def33c73f084e11a19ca77697d6b413.mediatailor.us-east-1.amazonaws.com/v1/manifest/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Plex_AMCPresents/216bee0d-1060-4ea2-b595-e6ebabde2d1c/2.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    
+    <div class="card">
+        <h3>DMAX</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/0/08/Dmax_tv-channel.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://dplus.gammacdn.workers.dev/videos/109.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    
+
+    <div class="card">
+        <h3>VICE</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Vice_logo.svg/1280px-Vice_logo.svg.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://lnc-vice.tubi.video/playlist.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+    
+      <div class="card">
+        <h3>VEVO</h3>
+        <img src="../external.html?link=https://upload.wikimedia.org/wikipedia/commons/f/f0/Vevo_2016_Logo.svg">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://d28edobz3hqdpi.cloudfront.net/v1/manifest/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-shs19slqofvwj-ssai-prd/d8d12863-13ac-4eb8-82cd-4a83187f601f/0.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+
+    <div class="card">
+        <h3>CTGN</h3>
+        <img src="../upload.wikimedia.org/wikipedia/commons/thumb/8/81/CGTN.svg/2560px-CGTN.svg.png">                   
+        <button class="btn-primary" onclick="playChannel('../external.html?link=https://livedoc.cgtn.com/1000d/prog_index.m3u8', 'hls')">WATCH NOW</button>
+    </div>
+</div>
+</div>
+
+<script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="../external.html?link=https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+    function playChannel(url, type) {
+        var modal = document.getElementById("myModal");
+        var video = document.getElementById("modal-video");
+        var iframe = document.getElementById("modal-iframe");
+
+        if (type === 'youtube') {
+            iframe.src = url;
+            iframe.style.display = 'block';
+            video.style.display = 'none';
+        } else if (type === 'hls' || type === 'http-hls') {
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                video.play();
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.play();
+            }
+            video.style.display = 'block';
+            iframe.style.display = 'none';
         }
-    </script>
-	<script>
-                    document.getElementById('visitorCountry').textContent = `Your Country: ${data.country}`;
-                }).catch(error => {
-                    console.error('Error fetching country:', error);
-                    document.getElementById('visitorCountry').textContent = `Your Country: Unable to determine`;
-                });
-        });
-    </script>
-	<divi><p id="visitorCount"></p>
-<p id="visitorCountry"></p></divi>
+
+        modal.style.display = "block";
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function() {
+        var modal = document.getElementById("myModal");
+        var video = document.getElementById("modal-video");
+        var iframe = document.getElementById("modal-iframe");
+        iframe.src = "";
+        video.pause();
+        video.src = "";
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target == modal) {
+            var video = document.getElementById("modal-video");
+            var iframe = document.getElementById("modal-iframe");
+            iframe.src = "";
+            video.pause();
+            video.src = "";
+            modal.style.display = "none";
+        }
+    }
+	
+    function redirectToPlayerz() {
+        window.location.href = "../external.html?link=https://player.enicsnet.com/";
+    }
+      function redirectToPlayerx() {
+        window.location.href = "../external.html?link=https://player.enicsnet.com/gtv.html";
+    }
+     function redirectToPlayery() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/animax.html";
+    }
+     function redirectToPlayernba() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/nba.html";
+    }
+     function redirectToPlayerhbo() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/hbo.html";
+    }
+     function redirectToPlayerkapamilya() {
+        window.location.href = "../external.html?link=https://player.enicsnet.com/kapamilya.html";
+    }
+     function redirectToPlayera2z() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/a2z.html";
+    }
+     function redirectToPlayerpbo() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/pbo.html";
+    }
+     function redirectToPlayeronesport() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/onesport.html";
+    }
+     function redirectToPlayerhbo() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/hbo.html";
+    }
+    function redirectToPlayerrptv() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/rptv.html";
+    }
+    function redirectToPlayerdreamworktagalog() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/dreamworkstagalog.html";
+    }
+    function redirectToPlayerthrill() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/thrill.html";
+    }
+    function redirectToPlayerpba() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/pba.html";
+    }
+    function redirectToPlayerhistory() {
+        window.location.href = "../external.html?link=http://playerz.rf.gd/history.html";
+    }
+</script>
+
+</body>
+
+<!-- Mirrored from app.enicsnet.com/ by HTTrack Website Copier/3.x [XR&CO'2017], Fri, 21 Jun 2024 03:16:43 GMT -->
 </html>
